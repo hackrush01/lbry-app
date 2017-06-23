@@ -11,6 +11,7 @@ import { selectResolvingUris } from "selectors/content";
 import { selectCostInfoForUri } from "selectors/cost_info";
 import { doOpenModal } from "actions/app";
 import { doClaimEligiblePurchaseRewards } from "actions/rewards";
+import { doFileList } from "actions/file_info";
 import batchActions from "util/batchActions";
 
 export function doResolveUri(uri) {
@@ -350,6 +351,7 @@ export function doPublish(params) {
             claim,
           },
         });
+        dispatch(doFileList());
         resolve(claim);
       };
       const failure = error => {
