@@ -71,9 +71,9 @@ if ! cmd_exists pip; then
   fi
 fi
 
-if $LINUX && [ "$(pip list --format=columns | grep setuptools | wc -l)" -ge 1 ]; then
-  $SUDO pip install setuptools
-fi
+#if $LINUX && [ "$(pip list --format=columns | grep setuptools | wc -l)" -ge 1 ]; then
+#  $SUDO pip install setuptools
+#fi
 
 if ! cmd_exists virtualenv; then
   $SUDO pip install virtualenv

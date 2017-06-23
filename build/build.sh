@@ -51,13 +51,15 @@ if $LINUX && [ -z "$(dpkg-query --show --showformat='${Status}\n' "$libsecret" 2
   sudo apt-get install --no-install-recommends -y "$libsecret"
 fi
 
+# install yarn
+command -v yarn >/dev/null 2>&1 || npm install -g yarn
 
 [ -d "$ROOT/dist" ] && rm -rf "$ROOT/dist"
 mkdir -p "$ROOT/dist"
 [ -d "$ROOT/app/dist" ] && rm -rf "$ROOT/app/dist"
 mkdir -p "$ROOT/app/dist"
 
-npm install
+yarn install
 
 
 
@@ -67,7 +69,8 @@ npm install
 
 (
   cd "$ROOT/ui"
-  npm install
+  yarn install
+  npm rebuild node-sass
 
   # necessary to ensure native Node modules (e.g. keytar) are built against the correct version of Node)
   # yes, it needs to be run twice. it fails the first time, not sure why
@@ -105,7 +108,7 @@ rm "$BUILD_DIR/daemon.zip"
 
 (
   cd "$ROOT/app"
-  npm install
+  yarn install
 )
 
 if [ "$FULL_BUILD" == "true" ]; then
