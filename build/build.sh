@@ -45,15 +45,6 @@ if [ "$FULL_BUILD" == "true" ]; then
   python "$BUILD_DIR/set_version.py"
 fi
 
-libsecret="libsecret-1-dev"
-if $LINUX && [ -z "$(dpkg-query --show --showformat='${Status}\n' "$libsecret" 2>/dev/null | grep "install ok installed")" ]; then
-  # this is needed for keytar, which does secure password/token management
-  sudo apt-get install --no-install-recommends -y "$libsecret"
-fi
-
-# install yarn
-command -v yarn >/dev/null 2>&1 || npm install -g yarn
-
 [ -d "$ROOT/dist" ] && rm -rf "$ROOT/dist"
 mkdir -p "$ROOT/dist"
 [ -d "$ROOT/app/dist" ] && rm -rf "$ROOT/app/dist"
