@@ -9,6 +9,8 @@ import SplashScreen from "component/splash.js";
 import AuthOverlay from "component/authOverlay";
 import { doChangePath, doNavigate, doDaemonReady } from "actions/app";
 import { toQueryString } from "util/query_params";
+import { selectBadgeNumber } from "selectors/app";
+import * as types from "constants/action_types";
 
 const env = ENV;
 const { remote, ipcRenderer, shell } = require("electron");
@@ -69,6 +71,30 @@ document.addEventListener("click", event => {
     }
     target = target.parentNode;
   }
+});
+
+const application = remote.app;
+const dock = application.dock;
+const win = remote.BrowserWindow.getFocusedWindow();
+
+const setBadge = () => {
+  if (!dock) return;
+  if (win.isFocused()) return;
+
+  const state = app.store.getState();
+  const badgeNumber = selectBadgeNumber(state);
+
+  let badge;
+  if (badgeNumber === 0) badge = "";
+  else badge = "" + badgeNumber;
+
+  dock.setBadge(badge);
+};
+app.store.subscribe(setBadge);
+
+win.on("focus", () => {
+  app.store.dispatch({ type: types.WINDOW_FOCUSED });
+  dock.setBadge("");
 });
 
 const initialState = app.store.getState();
